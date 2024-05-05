@@ -1,6 +1,5 @@
 const { Router } = require("express");
-const { createTask, getTasks, updateTask, deleteTask } = require("../controllers/taskController");
-const Task = require("../models/Task");
+const { createTask, getTasks, updateTask, deleteTask, addAssignee, getAssignedTasks } = require("../controllers/taskController");
 
 const taskRouter = Router();
 
@@ -8,6 +7,8 @@ taskRouter.post('/', createTask);
 taskRouter.get('/', getTasks);
 taskRouter.put('/:id', updateTask);
 taskRouter.delete('/:id', deleteTask);
+taskRouter.patch('/assign/:id', addAssignee);
+taskRouter.get('/assigned-tasks', getAssignedTasks);
 
 // taskRouter.get('/filter', async (req, res) => {
 //     const filter = {};

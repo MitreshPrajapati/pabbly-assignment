@@ -46,7 +46,7 @@ const Navbar = () => {
       ]
     : [];
 
-  const logoSize = useBreakpointValue({ base: "100px", md: "150px" });
+  // const logoSize = useBreakpointValue({ base: "100px", md: "150px" });
 
   return (
     <Flex
@@ -54,8 +54,8 @@ const Navbar = () => {
       align="center"
       justify="space-between"
       padding="1rem"
-      bg="gray.200"
-      color="navy"
+      bg="green.400"
+      color="white"
       marginBottom="1rem"
       direction={["column", "row"]}
     >
@@ -79,7 +79,7 @@ const Navbar = () => {
           <Button colorScheme="blue" onClick={onLoginOpen}>
             Login
           </Button>
-          <Button colorScheme="green" onClick={onSignupOpen}>
+          <Button colorScheme="orange" onClick={onSignupOpen}>
             Sign Up
           </Button>
 

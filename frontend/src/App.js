@@ -1,16 +1,14 @@
-
-import { ChakraProvider } from '@chakra-ui/react'
 import Navbar from "./components/Navbar";
 import AllRoutes from './Routes/AllRoutes';
 
 
-
 function App() {
   return (
-    <ChakraProvider>
-      <Navbar />
-      <AllRoutes />
-    </ChakraProvider>
+      <div className='flex flex-col min-h-screen bg-green-50 '>
+        <Navbar />
+        {/* <AllRoutes /> */}
+        
+      </div>
   );
 }
 

@@ -8,7 +8,7 @@ const PrivateRoute = ({children}) => {
   const navigate = useNavigate();
 
   if( !isAuthenticated){
-    return navigate('/');
+    return navigate('/login');
   }
   return children;
 };

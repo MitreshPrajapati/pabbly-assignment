@@ -48,22 +48,59 @@ const updateTask = async (req, res) => {
 }
 
 const addAssignee = async (req, res) => {
-    const { userId, assigneeId, id } = req.body;
+    const { id } = req.params;
+    const { userId, assigneeId, assignee_status } = req.body;
     const task = await Task.findById(id);
     if (!task) {
         res.send({ message: "Task doesn't exists" });
     }
-    else{
-       await task.updateOne({$push:{assignee : assigneeId}});
-       res.send({message: 'Task assigned successfully'})
+    else if (task.userId === userId) {
+
+        const isPresent = task.assignee.filter((user) => user.assigneeId === assigneeId)
+        if (isPresent) {
+
+        } else {
+            await task.updateOne({
+                $push: {
+                    assignee:
+                        { assigneeId: assigneeId, assignee_status: assignee_status }
+                }
+            });
+        }
+
+        res.send({ message: 'Task assigned successfully' })
+    } else {
+        res.send({ message: "Not Authorized" });
     }
 
 }
-// const filterTask
+
+const getAssignedTasks = async (req, res) => {
+    const { userId } = req.body;
+
+    const tasks = await Task.find({ "assignee": { $elemMatch: { "assigneeId": userId } } });
+    // console.log(userId, tasks)
+    if (tasks.length > 0) {
+        res.send({ assignedTasks: tasks });
+    } else {
+        res.send({ message: "Task not found" });
+    }
+}
+
+
+const updateAssignedTask = (req, res) => {
+    const { userId, status } = req.body;
+    const { id } = req.params;
+
+
+}
 
 module.exports = {
     createTask,
     getTasks,
     updateTask,
     deleteTask,
+    addAssignee,
+    getAssignedTasks,
+    updateAssignedTask,
 }

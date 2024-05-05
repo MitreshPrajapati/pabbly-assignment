@@ -2,7 +2,9 @@ import React from 'react';
 
 function Tasks(props) {
     return (
-        <div></div>
+        <div>
+            Tasks page
+        </div>
     );
 }
 

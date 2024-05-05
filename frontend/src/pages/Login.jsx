@@ -26,7 +26,7 @@ const LoginSignupModal = ({ isOpen, onClose, isLogin }) => {
   });
   const [isLoading, setIsLoading] = useState(false);
   const toast = useToast();
-  const { login } = useAuth();
+  // const { login } = useAuth();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -55,7 +55,8 @@ const LoginSignupModal = ({ isOpen, onClose, isLogin }) => {
 
     if (data.token) {
       localStorage.setItem("token", data.token);
-      login();
+      // login();
+      
     }
 
     response.ok
