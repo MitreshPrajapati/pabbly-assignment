@@ -1,5 +1,6 @@
 const Task = require("../models/Task");
 
+// CRUD operations 
 const createTask = async (req, res) => {
     const { userId, title, description, status, priority, dueDate } = req.body;
     // console.log(userId);
@@ -26,6 +27,7 @@ const getTasks = async (req, res) => {
         res.send({ message: error })
     }
 }
+
 const deleteTask = async (req, res) => {
     const { id } = req.params;
     if (id) {
@@ -35,6 +37,7 @@ const deleteTask = async (req, res) => {
         res.send({ message: "Task doesn't exists" });
     }
 }
+
 const updateTask = async (req, res) => {
     const { id } = req.params;
     const updatedTask = req.body;
@@ -47,6 +50,8 @@ const updateTask = async (req, res) => {
     }
 }
 
+
+// Assignee functions
 const addAssignee = async (req, res) => {
     const { id } = req.params;
     const { userId, assigneeId, assignee_status } = req.body;
@@ -58,7 +63,19 @@ const addAssignee = async (req, res) => {
 
         const isPresent = task.assignee.filter((user) => user.assigneeId === assigneeId)
         if (isPresent) {
+            await task.updateOne({
+                $pull: {
+                    assignee:
+                        { assigneeId: assigneeId }
+                }
+            });
 
+            await task.updateOne({
+                $push: {
+                    assignee:
+                        { assigneeId: assigneeId, assignee_status: assignee_status }
+                }
+            });
         } else {
             await task.updateOne({
                 $push: {
@@ -87,10 +104,28 @@ const getAssignedTasks = async (req, res) => {
     }
 }
 
+const updateAssignedTask = async (req, res) => {
+    const { userId, status } = req.body; // assigneeId
+    const { id } = req.params;  //task id 
 
-const updateAssignedTask = (req, res) => {
-    const { userId, status } = req.body;
-    const { id } = req.params;
+    const task = await Task.findOneAndUpdate(
+        { "_id": id, "assignee.assigneeId": userId },
+        { $set: { "assignee.$[elem].assignee_status": status } },
+        {
+            new: true,
+            arrayFilters: [{ "elem.assigneeId": userId }]
+        }
+    ).exec()
+        .then(result => {
+            if (!result) {
+                res.send({ message: "Task not found or user not assigned to task." });
+            } else {
+                res.send({ message: "Task updated successfully" })
+            }
+        })
+        .catch(err => {
+            res.send({ message: err })
+        });
 
 
 }

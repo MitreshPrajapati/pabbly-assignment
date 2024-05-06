@@ -1,21 +1,21 @@
 const express = require('express');
-const bodyParser = require("body-parser");
 const cors = require('cors');
-const {Connection} = require("./config/db");
-const {userRouter} = require("./routes/user.route");
-const {authenticateUser} = require("./middlewares/authentication");
-const {taskRouter} = require("./routes/task.route");
+const { Connection } = require("./config/db");
+const { userRouter } = require("./routes/user.route");
+const { authenticateUser } = require("./middlewares/authentication");
+const { taskRouter } = require("./routes/task.route");
 const app = express();
 const PORT = process.env.PORT || 7079;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-// app.use(bodyParser.json());
 app.use(cors());
 
+app.get('/', (req, res) => {
+    res.send("Welcome to Task Manager API ->>")
+})
 
-
-app.use('/users', userRouter );
+app.use('/users', userRouter);
 app.use('/tasks', authenticateUser, taskRouter);
 
 
