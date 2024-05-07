@@ -1,100 +1,45 @@
-import {
-  Box,
-  Flex,
-  Avatar,
-  HStack,
-  Link,
-  Spacer,
-  IconButton,
-  Button,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
-  MenuDivider,
-  useDisclosure,
-  useColorModeValue,
-  useBreakpointValue,
-  Stack,
-} from "@chakra-ui/react";
-import { HamburgerIcon, CloseIcon, AddIcon } from "@chakra-ui/icons";
-import { useState } from "react";
-import LoginSignupModal from "../pages/Login";
+import React from "react";
+import { Box, Button, Flex, Spacer, Text } from "@chakra-ui/react";
 
-const Navbar = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const {
-    isOpen: isLoginOpen,
-    onOpen: onLoginOpen,
-    onClose: onLoginClose,
-  } = useDisclosure();
-  const {
-    isOpen: isSignupOpen,
-    onOpen: onSignupOpen,
-    onClose: onSignupClose,
-  } = useDisclosure();
-
-  const handleLogout = () => {
-    setIsLoggedIn(false);
-  };
-
-  const navItems = isLoggedIn
-    ? [
-        { label: "Logout", onClick: handleLogout },
-        { label: "Dashboard", href: "/dashboard" },
-        { label: "Profile", href: "/profile" },
-      ]
-    : [];
-
-  // const logoSize = useBreakpointValue({ base: "100px", md: "150px" });
-
+const Navbar = ({
+  isLoggedIn,
+  setIsLoginFormOpen,
+  setIsRegisterFormOpen,
+  onLogout,
+}) => {
   return (
     <Flex
-      as="nav"
-      align="center"
-      justify="space-between"
-      padding="1rem"
-      bg="green.400"
-      color="white"
-      marginBottom="1rem"
-      direction={["column", "row"]}
+      p={4}
+      bg={"navy"}
+      justifyContent={"space-between"}
+      alignItems={"center"}
+      gap={4}
+      width={"100%"}
     >
-      <Flex align="center" w={"100%"} justify={"space-between"}>
-        <Box as="a" href="/" fontSize="xl" fontWeight="bold" lineHeight="none">
+      <Box>
+        <Text textColor={"white"} fontSize={"2xl"} fontWeight={"bold"}>
           Pabbly
-        </Box>
-        <Flex align={"center"} justify={"center"} gap={4}>
-          {isLoggedIn &&
-            navItems.map((item, index) => (
-              <Link
-                key={index}
-                href={item.href}
-                onClick={item.onClick}
-                padding={["0.5rem", "1rem"]}
-              >
-                {item.label}
-              </Link>
-            ))}
-
-          <Button colorScheme="blue" onClick={onLoginOpen}>
-            Login
-          </Button>
-          <Button colorScheme="orange" onClick={onSignupOpen}>
-            Sign Up
-          </Button>
-
-          <LoginSignupModal
-            isOpen={isLoginOpen}
-            onClose={onLoginClose}
-            isLogin={true}
-          />
-          <LoginSignupModal
-            isOpen={isSignupOpen}
-            onClose={onSignupClose}
-            isLogin={false}
-          />
-        </Flex>
-      </Flex>
+        </Text>
+      </Box>
+      <Spacer />
+      <Box display={"flex"}>
+        <Button
+          onClick={() => setIsLoginFormOpen(true)}
+          mr={4}
+          display={!isLoggedIn ? "block" : "none"}
+        >
+          Login
+        </Button>
+        <Button
+          onClick={() => setIsRegisterFormOpen(true)}
+          display={!isLoggedIn ? "block" : "none"}
+        >
+          Register
+        </Button>
+        <Button onClick={onLogout} display={isLoggedIn ? "block" : "none"}>
+          Logout
+        </Button>
+      </Box>
     </Flex>
   );
 };
