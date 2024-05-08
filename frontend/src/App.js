@@ -6,6 +6,7 @@ import {
   Heading,
   Text,
   filter,
+  useToast,
 } from '@chakra-ui/react';
 import './App.css';
 import LoginForm from './components/LoginForm';
@@ -17,6 +18,7 @@ import { BASE_URL } from './API';
 import Pagination from './components/Pagination';
 
 function App() {
+  const toast = useToast();
   const [isLoginFormOpen, setIsLoginFormOpen] = useState(false);
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')) || {});
   const [token, setToken] = useState(localStorage.getItem('token') || '');
@@ -54,8 +56,16 @@ function App() {
       setIsLoggedIn(true);
       handleGetTasks()
     }
-
-    console.log('Logging in with:', credentials, data);
+    toast({
+      position: 'top-right',
+      isClosable: true,
+      render: () => (
+        <Box color='white' p={3} bg='blue.500'>
+          {data.message}
+        </Box>
+      ),
+    })
+    // console.log('Logging in with:', credentials, data);
   };
 
   const handleRegister = async (userData) => {
@@ -70,7 +80,16 @@ function App() {
     })
 
     const data = await response.json();
-    console.log('Registering with:', userData, data);
+    toast({
+      isClosable: true,
+      position: 'top-right',
+      render: () => (
+        <Box color='white' p={3} bg='blue.500'>
+          {data.message}
+        </Box>
+      ),
+    })
+    // console.log('Registering with:', userData, data);
   };
 
   const handleLogout = () => {
@@ -94,7 +113,16 @@ function App() {
       body: JSON.stringify(payload)
     })
     const data = await response.json();
-    console.log('Adding task:', taskData, data);
+    toast({
+      isClosable: true,
+      position: 'top-right',
+      render: () => (
+        <Box color='white' p={3} bg='blue.500'>
+          {data.message}
+        </Box>
+      ),
+    })
+    // console.log('Adding task:', taskData, data);
     handleGetTasks();
   };
 
@@ -112,7 +140,8 @@ function App() {
       })
 
       const data = await response.json();
-      console.log(data);
+      
+      // console.log(data);
       setTasks(data);
       // return data;
     }
@@ -177,7 +206,16 @@ function App() {
       })
 
       const data = await response.json()
-      console.log(data);
+      toast({
+        isClosable: true,
+        position: 'top-right',
+        render: () => (
+          <Box color='white' p={3} bg='blue.500'>
+            {data.message}
+          </Box>
+        ),
+      })
+      // console.log(data);
       handleGetTasks()
     }
   };
