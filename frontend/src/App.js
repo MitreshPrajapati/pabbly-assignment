@@ -19,10 +19,13 @@ import Pagination from './components/Pagination';
 function App() {
   const [isLoginFormOpen, setIsLoginFormOpen] = useState(false);
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')) || {});
+  const [token, setToken] = useState(localStorage.getItem('token') || '');
+
   const [isRegisterFormOpen, setIsRegisterFormOpen] = useState(false);
   const [isAddTaskFormOpen, setIsAddTaskFormOpen] = useState(false);
   const [isUpdateTaskFormOpen, setIsUpdateTaskFormOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
   const [assignedTasks, setAssignedTasks] = useState([]);
   const [pendingAssignedTasks, setPendingAssignedTasks] = useState([]);
   const [CompletedAssignedTasks, setCompletedAssignedTasks] = useState([]);
@@ -47,6 +50,7 @@ function App() {
       localStorage.setItem('token', data.token);
       localStorage.setItem('user', JSON.stringify(data.user));
       setUser(data.user);
+      setToken(data.token);
       setIsLoggedIn(true);
       handleGetTasks()
     }
@@ -72,6 +76,7 @@ function App() {
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
+    setToken('');
     setIsLoggedIn(false);
   };
 
@@ -227,9 +232,10 @@ function App() {
     const token = localStorage.getItem('token')
     if (token) {
       setIsLoggedIn(true)
-    } else {
-      setIsLoginFormOpen(true)
     }
+    // else {
+    //   setIsLoginFormOpen(true)
+    // }
   }, [isLoggedIn]);
 
   return (
@@ -241,13 +247,13 @@ function App() {
         setIsRegisterFormOpen={setIsRegisterFormOpen}
       />
 
-      <Button colorScheme='blue' mt={6} mx={'auto'} width={'15rem'} onClick={() => setIsAddTaskFormOpen(true)}>Add Task</Button>
+
 
       <LoginForm isOpen={isLoginFormOpen} onClose={() => setIsLoginFormOpen(false)} onSubmit={handleLogin} />
       <RegisterForm isOpen={isRegisterFormOpen} onClose={() => setIsRegisterFormOpen(false)} onSubmit={handleRegister} />
-      {isLoggedIn ? <Box>
-
-
+      {isLoggedIn ? <Box display={'flex'} flexDir={'column'} justifyContent={'center'} >
+        
+        <Button colorScheme='blue' mt={6} mx={'auto'} width={'15rem'} textAlign={'center'} onClick={() => setIsAddTaskFormOpen(true)}>Add Task</Button>
         <AddTaskForm isOpen={isAddTaskFormOpen} onClose={() => setIsAddTaskFormOpen(false)} onSubmit={handleAddTask} />
 
         <Box>
@@ -312,14 +318,14 @@ function App() {
           </Box>
         ))}
 
-        <Pagination page={page} />
+        {/* <Pagination page={page} /> */}
         {selectedTask &&
           <UpdateTaskForm isOpen={isUpdateTaskFormOpen}
             onClose={() => setIsUpdateTaskFormOpen(false)}
             onSubmit={handleUpdateTask}
             task={selectedTask} />}
 
-      </Box> : <Heading as={'h1'} textAlign={'center'} mt={10} w={'40%'} mx={'auto'} color={'navy'} fontWeight={'bold'}>Now you can Create and Manage your task's easily with our Task Manager.</Heading>}
+      </Box> : <Heading as={'h1'} textAlign={'center'} mt={20} w={'40%'} mx={'auto'} color={'navy'} fontWeight={'bold'}>Now you can Create and Manage your task's easily with our Task Manager.</Heading>}
     </Box>
   );
 }
