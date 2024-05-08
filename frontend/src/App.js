@@ -148,7 +148,6 @@ function App() {
   }
 
   const handleGetAssignedTasks = async () => {
-    const token = localStorage.getItem('token') || '';
     const user = JSON.parse(localStorage.getItem('user'));
     if (token) {
       const response = await fetch(`${BASE_URL}/tasks/assigned-tasks`, {
@@ -156,7 +155,7 @@ function App() {
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
-          'authentication': `Bearer ${localStorage.getItem('token')}`
+          'authentication': `Bearer ${token}`
         }
       })
 
@@ -190,7 +189,6 @@ function App() {
 
   const handleUpdateTask = async (updatedTask) => {
     // Handle updating task logic
-    const token = localStorage.getItem('token') || '';
     const { id, status, title, priority, description, dueDate } = updatedTask;
     if (token) {
       const payload = { status, title, priority, description, dueDate }
@@ -200,7 +198,7 @@ function App() {
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
-          'authentication': `Bearer ${localStorage.getItem('token')}`
+          'authentication': `Bearer ${token}`
         },
         body: JSON.stringify(payload)
       })
@@ -222,7 +220,7 @@ function App() {
 
   const handleToggleTaskStatus = async (task) => {
     // Handle updating task logic
-    const token = localStorage.getItem('token') || '';
+   
     const { _id, status } = task;
     const id = _id;
     if (token) {
@@ -234,7 +232,7 @@ function App() {
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
-          'authentication': `Bearer ${localStorage.getItem('token')}`
+          'authentication': `Bearer ${token}`
         },
         body: JSON.stringify(payload)
       })
@@ -253,11 +251,20 @@ function App() {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        'authentication': `Bearer ${localStorage.getItem('token')}`
+        'authentication': `Bearer ${token}`
       }
     });
     const data = await response.json();
-    console.log('Deleting task:', taskId, data);
+    toast({
+      isClosable: true,
+      position: 'top-right',
+      render: () => (
+        <Box color='white' p={3} bg='blue.500'>
+          {data.message}
+        </Box>
+      ),
+    })
+    // console.log('Deleting task:', taskId, data);
     handleGetTasks();
   };
 
