@@ -59,13 +59,9 @@ function App() {
     toast({
       position: 'top-right',
       isClosable: true,
-      render: () => (
-        <Box color='white' p={3} bg='blue.500'>
-          {data.message}
-        </Box>
-      ),
+      description:`${data.message}`,
+      duration: 3000
     })
-    // console.log('Logging in with:', credentials, data);
   };
 
   const handleRegister = async (userData) => {
@@ -81,15 +77,11 @@ function App() {
 
     const data = await response.json();
     toast({
-      isClosable: true,
       position: 'top-right',
-      render: () => (
-        <Box color='white' p={3} bg='blue.500'>
-          {data.message}
-        </Box>
-      ),
+      isClosable: true,
+      description:`${data.message}`,
+      duration: 3000
     })
-    // console.log('Registering with:', userData, data);
   };
 
   const handleLogout = () => {
@@ -114,15 +106,11 @@ function App() {
     })
     const data = await response.json();
     toast({
-      isClosable: true,
       position: 'top-right',
-      render: () => (
-        <Box color='white' p={3} bg='blue.500'>
-          {data.message}
-        </Box>
-      ),
+      isClosable: true,
+      description:`${data.message}`,
+      duration: 3000
     })
-    // console.log('Adding task:', taskData, data);
     handleGetTasks();
   };
 
@@ -140,10 +128,7 @@ function App() {
       })
 
       const data = await response.json();
-      
-      // console.log(data);
       setTasks(data);
-      // return data;
     }
   }
 
@@ -161,7 +146,6 @@ function App() {
 
       const data = await response.json();
       if (data?.assignedTasks) {
-        // console.log(data.assignedTasks)
         setAssignedTasks(data.assignedTasks);
 
         const filterOption = { status: true, id: user._id }
@@ -181,8 +165,6 @@ function App() {
           })
         })
         setPendingAssignedTasks(pendingTask)
-
-        // console.log(pendingTask, completedTask)
       }
     }
   }
@@ -205,15 +187,11 @@ function App() {
 
       const data = await response.json()
       toast({
-        isClosable: true,
         position: 'top-right',
-        render: () => (
-          <Box color='white' p={3} bg='blue.500'>
-            {data.message}
-          </Box>
-        ),
+        isClosable: true,
+        description:`${data.message}`,
+        duration: 3000
       })
-      // console.log(data);
       handleGetTasks()
     }
   };
@@ -238,7 +216,6 @@ function App() {
       })
 
       const data = await response.json()
-      // console.log(data);
       handleGetTasks();
 
     }
@@ -278,9 +255,6 @@ function App() {
     if (token) {
       setIsLoggedIn(true)
     }
-    // else {
-    //   setIsLoginFormOpen(true)
-    // }
   }, [isLoggedIn]);
 
   return (
@@ -327,7 +301,6 @@ function App() {
                 return (
                   <Box key={task._id} minW={'200px'} p={4} bg={'blue.100'} borderRadius={4}>
                     <Text  >{task.title}</Text>
-                    {/* <Text  >{task.title}</Text> */}
                     <Text color={'navy'} fontWeight={'semibold'} >Completed</Text>
                   </Box>
                 )
